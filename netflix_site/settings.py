@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,6 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^e%&cix)hzkx%3ntj=y=s^-1q2g-y+d6a!3_gtxsp@89z-riy#'
+
+MY_APP_DB_PASSWORD = os.environ.get('MY_APP_DB_PASSWORD')
+MY_APP_DB_HOST = os.environ.get('MY_APP_DB_HOST')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,6 +88,11 @@ WSGI_APPLICATION = 'netflix_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'database',
+        'USER': 'fl0user',
+        'PASSWORD': MY_APP_DB_PASSWORD,
+        'HOST': MY_APP_DB_HOST,
+        'PORT': '5432'
     }
 }
 

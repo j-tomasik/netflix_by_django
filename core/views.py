@@ -15,7 +15,11 @@ def login(request):
     if user is not None:
       auth.login(request, user)
       return redirect('/')
-  return render(request, 'login.html')
+    else:
+      messages.info(request, 'Credentials Invalid')
+      redirect('login')
+  else:
+    return render(request, 'login.html')
 
 def signup(request):
   if request.method == 'POST':

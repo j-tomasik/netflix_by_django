@@ -20,6 +20,11 @@ def signup(request):
       if User.objects.filter(email=email).exisits():
         messages.info(request, 'Email taken')
         return redirect('signup')
+      elif User.objects.filter(username=username).exists():
+        messages.info(request, 'Username is taken')
+        return redirect('signup')
+      else:
+        user = User.object.create_user(username=username, email=email, password=password)
     else:
       messages.info(request, 'Password not matching')
       return redirct('signup')    

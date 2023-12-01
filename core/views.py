@@ -16,5 +16,12 @@ def signup(request):
     password = request.POST['password']
     password2 = request.POST['password2']
     
+    if password == password2:
+      if User.objects.filter(email=email).exisits():
+        messages.info(request, 'Email taken')
+        return redirect('signup')
+    else:
+      messages.info(request, 'Password not matching')
+      return redirct('signup')    
   else:
     return render(request, 'signup.html')

@@ -9,6 +9,10 @@ def login(request):
 
 def signup(request):
   if request.method == 'POST':
-    pass
+    email = request.POST['email']
+    username= request.POST['username']
+    password = request.POST['password']
+    password2 = request.POST['password2']
+    
   else:
     return render(request, 'signup.html')

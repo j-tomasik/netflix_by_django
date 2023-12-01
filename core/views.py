@@ -7,6 +7,11 @@ def index(request):
   return render(request, 'index.html')
 
 def login(request):
+  if request.method == 'POST':
+    username = request.POST['username']
+    password = request.POST['password']
+    
+    user = aut
   return render(request, 'login.html')
 
 def signup(request):

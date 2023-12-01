@@ -25,6 +25,10 @@ def signup(request):
         return redirect('signup')
       else:
         user = User.object.create_user(username=username, email=email, password=password)
+        user.save()
+        user_login = auth.authenticate(username=username, password=password)
+        auth.login(request, user_login)
+        return redirect('/')
     else:
       messages.info(request, 'Password not matching')
       return redirect('signup')    

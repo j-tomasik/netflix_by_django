@@ -91,9 +91,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'database',
         'USER': 'fl0user',
-        'PASSWORD': MY_APP_DB_PASSWORD,
-        'HOST': MY_APP_DB_HOST,
-        'PORT': '5432'
+        'PASSWORD': 'HcPo3xINw8SU',
+        'HOST': 'ep-spring-silence-98931359.us-east-2.aws.neon.fl0.io',
+        'PORT': '5432',
     }
 }
 

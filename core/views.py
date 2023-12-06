@@ -18,8 +18,8 @@ def login(request):
     else:
       messages.info(request, 'Credentials Invalid')
       redirect('login')
-  else:
-    return render(request, 'login.html')
+  
+  return render(request, 'login.html')
 
 def signup(request):
   if request.method == 'POST':
@@ -29,14 +29,14 @@ def signup(request):
     password2 = request.POST['password2']
     
     if password == password2:
-      if User.objects.filter(email=email).exisits():
+      if User.objects.filter(email=email).exists():
         messages.info(request, 'Email taken')
         return redirect('signup')
       elif User.objects.filter(username=username).exists():
         messages.info(request, 'Username is taken')
         return redirect('signup')
       else:
-        user = User.object.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
         user_login = auth.authenticate(username=username, password=password)
         auth.login(request, user_login)

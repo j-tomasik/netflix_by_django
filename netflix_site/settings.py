@@ -94,6 +94,9 @@ DATABASES = {
         'PASSWORD': 'HcPo3xINw8SU',
         'HOST': 'ep-spring-silence-98931359.us-east-2.aws.neon.fl0.io',
         'PORT': '5432',
+        'OPTIONS': {
+            'options': f'endpoint=ep-spring-silence-98931359'
+        }
     }
 }
 

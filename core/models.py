@@ -22,7 +22,7 @@ class Movie(models.Model):
     length = models.PositiveBigIntegerField()
     image_card = models.ImageField(upload_to='movie_images/')
     image_cover = models.ImageField(upload_to='movie_images/')
-    video = models.FilField(upload_to='movie_videos/')
+    video = models.FileField(upload_to='movie_videos/')
     movie_views = models.IntegerField(default=0)
     
     def __str__(self):

@@ -4,7 +4,13 @@ from django.db import models
 class Movie(models.Model):
     
     GENRE_CHOICES = [
-        
+        ('action', 'Action'),
+        ('comedy', 'Comedy'),
+        ('drama', 'Drama'),
+        ('horror', 'Horror'),
+        ('romance', 'Romance'),
+        ('science_fiction', 'Science Fiction'),
+        ('fantasy', 'Fantasy'),
     ]
     
     title = models.charField(max_length=255)

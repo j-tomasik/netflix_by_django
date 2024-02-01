@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import Movie
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
   movies = Movie.objects.all()
@@ -11,6 +11,9 @@ def index(request):
     'movies': movies,
   }
   return render(request, 'index.html', context)
+
+def movies(request):
+  pass
 
 def login(request):
   if request.method == 'POST':

@@ -69,7 +69,7 @@
 
             {% for movie in movies %}
             <div class="w-40 h-64 flex-shrink-0 film-card"
-                onclick="showModal(this)" 
+                onclick='showModal()'
                 data-title="{{ movie.title }}"
                 data-description="{{ movie.description }}"
                 data-release-date="{{ movie.release_date|date:'Y' }}"

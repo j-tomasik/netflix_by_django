@@ -1,0 +1,85 @@
+# Auggie PR Review Workflow
+#
+# Triggered by commenting '/auggiePRReview' on a PR
+
+name: Auggie PR Review
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-comment:
+    # Only run on PR comments (not issue comments)
+    if: github.event.issue.pull_request != null
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      pr_number: ${{ steps.check.outputs.pr_number }}
+
+    steps:
+      - name: Check trigger and add reaction
+        id: check
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = context.payload.comment.body;
+            const prNumber = context.issue.number;
+
+            const TRIGGER_COMMAND = '/auggiePRReview';
+
+            let shouldRun = false;
+            if (comment.trim().startsWith(TRIGGER_COMMAND)) {
+              shouldRun = true;
+
+              // Add eyes reaction to indicate processing started
+              await github.rest.reactions.createForIssueComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes'
+              });
+            }
+
+            core.setOutput('should_run', shouldRun);
+            core.setOutput('pr_number', prNumber);
+
+  pr-review:
+    needs: check-comment
+    if: needs.check-comment.outputs.should_run == 'true'
+    uses: augment-solutions/.github/.github/workflows/org-pr-review.yml@main
+    with:
+      pull_number: ${{ fromJSON(needs.check-comment.outputs.pr_number) }}
+      package_manager: ''
+    secrets:
+      augment_session_auth: ${{ secrets.AUGMENT_SESSION_AUTH }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+
+  post-review-comment:
+    needs: [check-comment, pr-review]
+    if: always() && needs.check-comment.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Add completion reaction (rocket/confused)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const reaction = '${{ needs.pr-review.result }}' === 'success' ? 'rocket' : 'confused';
+
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: reaction
+            });
